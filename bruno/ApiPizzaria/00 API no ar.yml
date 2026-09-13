@@ -1,0 +1,20 @@
+info:
+  name: 00 API no ar
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: ?00 API no ar=
+  params:
+    - name: 00 API no ar
+      value: ""
+      type: query
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
