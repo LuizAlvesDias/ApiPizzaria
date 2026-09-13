@@ -5,7 +5,7 @@ info:
 
 http:
   method: DELETE
-  url: http://localhost:5050/api/pizzas/3
+  url: "{{baseUrl}}/api/pizzas/3"
   auth: inherit
 
 settings:

@@ -5,7 +5,16 @@ info:
 
 http:
   method: POST
-  url: http://localhost:5050/api/pizzas
+  url: "{{baseUrl}}/api/pizzas"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Portuguesa",
+        "sabor": "Presunto, queijo, ovo, cebola e azeitona",
+        "tamanho": "Grande",
+        "preco": 52.90
+      }
   auth: inherit
 
 settings:

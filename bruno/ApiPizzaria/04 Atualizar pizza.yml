@@ -5,7 +5,16 @@ info:
 
 http:
   method: PUT
-  url: http://localhost:5050/api/pizzas/3
+  url: "{{baseUrl}}/api/pizzas/3"
+  body:
+    type: json
+    data: |-
+      {
+        "nome": "Portuguesa Especial",
+        "sabor": "Presunto, queijo, ovo, cebola, azeitona e bacon",
+        "tamanho": "Grande",
+        "preco": 59.90
+      }
   auth: inherit
 
 settings:

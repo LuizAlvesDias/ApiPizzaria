@@ -5,11 +5,7 @@ info:
 
 http:
   method: GET
-  url: ?00 API no ar=
-  params:
-    - name: 00 API no ar
-      value: ""
-      type: query
+  url: "{{baseUrl}}/"
   auth: inherit
 
 settings:
