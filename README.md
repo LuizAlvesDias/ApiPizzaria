@@ -100,3 +100,11 @@ DELETE /api/pizzas/3
 Os testes da API foram realizados utilizando o Bruno.
 
 A Collection do Bruno está localizada na pasta `bruno` do projeto.
+
+## Vídeo
+
+Link do vídeo da apresentação:
+
+```text
+COLOCAR LINK DO VÍDEO AQUI
+```
