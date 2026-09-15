@@ -103,7 +103,7 @@ A Collection do Bruno está localizada na pasta `bruno` do projeto.
 
 ## Vídeo
 
-Link do vídeo da apresentação: 
+Link do vídeo da apresentação: https://drive.google.com/file/d/1Awu9gGcRg298Bz1xAmD0SzMTV-gCJ7UQ/view?usp=drive_link
 
 ```text
 https://drive.google.com/file/d/1Awu9gGcRg298Bz1xAmD0SzMTV-gCJ7UQ/view?usp=drive_link
