@@ -1,4 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<ApiDbContext>(options =>
+    options.UseSqlite(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    )
+);
+
 var app = builder.Build();
 
 var pizzas = new List<Pizza>
@@ -102,3 +111,22 @@ record PizzaAtualizadaDTO(
     string tamanho,
     decimal preco
 );
+
+class PizzaEntity
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Sabor { get; set; } = string.Empty;
+    public string Tamanho { get; set; } = string.Empty;
+    public decimal Preco { get; set; }
+}
+
+class ApiDbContext : DbContext
+{
+    public ApiDbContext(DbContextOptions<ApiDbContext> options)
+        : base(options)
+    {
+    }
+
+    public DbSet<PizzaEntity> Pizzas => Set<PizzaEntity>();
+}
