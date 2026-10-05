@@ -18,10 +18,8 @@ var pizzas = new List<Pizza>
 
 app.MapGet("/", () => "API da Pizzaria do Filipe");
 
-app.MapGet("/api/pizzas", () =>
-{
-    return Results.Ok(pizzas);
-});
+app.MapGet("/api/pizzas", async (ApiDbContext db) =>
+    await db.Pizzas.ToListAsync());
 
 app.MapGet("/api/pizzas/{id:int}", (int id) =>
 {
@@ -35,21 +33,13 @@ app.MapGet("/api/pizzas/{id:int}", (int id) =>
     return Results.Ok(pizzaEncontrada);
 });
 
-app.MapPost("/api/pizzas", (PizzaDTO dados) =>
+app.MapPost("/api/pizzas", async (PizzaEntity pizza, ApiDbContext db) =>
 {
-    int proximoId = pizzas.Count + 1;
+    db.Pizzas.Add(pizza);
 
-    var novaPizza = new Pizza(
-        proximoId,
-        dados.nome,
-        dados.sabor,
-        dados.tamanho,
-        dados.preco
-    );
+    await db.SaveChangesAsync();
 
-    pizzas.Add(novaPizza);
-
-    return Results.Created($"/api/pizzas/{novaPizza.id}", novaPizza);
+    return Results.Created($"/api/pizzas/{pizza.Id}", pizza);
 });
 
 app.MapPut("/api/pizzas/{id:int}", (int id, PizzaAtualizadaDTO dados) =>
