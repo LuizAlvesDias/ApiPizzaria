@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gerenciamento de Pizzas - Pizzaria do Filipe</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="logo-area">
+        <span class="logo-icon" aria-hidden="true">🍕</span>
+        <h1>Pizzaria do Filipe</h1>
+      </div>
+      <p class="subtitle">Painel de Gerenciamento de Cardápio</p>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Aviso de Conexão com a API -->
+    <section class="banner-api" role="region" aria-label="Status da Conexão">
+      <div class="banner-icon" aria-hidden="true">🌐</div>
+      <div class="banner-text">
+        <strong>Interface Conectada à API:</strong>
+        <p>Operações sincronizadas em tempo real via endpoints HTTP (<code>/api/pizzas</code>) e persistidas no banco de dados.</p>
+      </div>
+    </section>
+
+    <!-- Área de feedback dinâmico -->
+    <div id="feedback-mensagem" class="feedback-box" role="status" aria-live="polite" style="display: none;"></div>
+
+    <div class="content-grid">
+      <!-- Seção do Formulário -->
+      <section class="card form-card" aria-labelledby="form-heading">
+        <div class="card-header">
+          <h2 id="form-heading">Cadastrar Nova Pizza</h2>
+          <span class="badge-tag" id="badge-modo">API</span>
+        </div>
+
+        <form id="form-pizza" novalidate>
+          <input type="hidden" id="input-id" name="id" value="">
+
+          <div class="form-group">
+            <label for="input-nome">
+              Nome da Pizza <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="input-nome" 
+              name="nome" 
+              placeholder="Ex.: Quatro Queijos" 
+              required 
+              maxlength="60"
+              autocomplete="off"
+            >
+            <span class="error-msg" id="erro-nome" aria-live="polite"></span>
+          </div>
+
+          <div class="form-group">
+            <label for="input-sabor">
+              Sabor / Ingredientes <span class="required" aria-hidden="true">*</span>
+            </label>
+            <input 
+              type="text" 
+              id="input-sabor" 
+              name="sabor" 
+              placeholder="Ex.: Mussarela, provolone, gorgonzola e parmesão" 
+              required 
+              maxlength="120"
+              autocomplete="off"
+            >
+            <span class="error-msg" id="erro-sabor" aria-live="polite"></span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="select-tamanho">
+                Tamanho <span class="required" aria-hidden="true">*</span>
+              </label>
+              <select id="select-tamanho" name="tamanho" required>
+                <option value="" disabled selected>Selecione um tamanho</option>
+                <option value="Pequena">Pequena</option>
+                <option value="Média">Média</option>
+                <option value="Grande">Grande</option>
+                <option value="Família">Família</option>
+              </select>
+              <span class="error-msg" id="erro-tamanho" aria-live="polite"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="input-preco">
+                Preço (R$) <span class="required" aria-hidden="true">*</span>
+              </label>
+              <input 
+                type="number" 
+                id="input-preco" 
+                name="preco" 
+                placeholder="Ex.: 59.90" 
+                step="0.01" 
+                min="0.01" 
+                required
+              >
+              <span class="error-msg" id="erro-preco" aria-live="polite"></span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" id="btn-submit" class="btn btn-primary">
+              Cadastrar Pizza
+            </button>
+            <button type="button" id="btn-cancelar" class="btn btn-secondary" style="display: none;">
+              Cancelar Edição
+            </button>
+            <button type="reset" id="btn-reset" class="btn btn-secondary">
+              Limpar Campos
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Seção da Listagem -->
+      <section class="card list-card" aria-labelledby="list-heading">
+        <div class="card-header">
+          <h2 id="list-heading">Pizzas Cadastradas</h2>
+          <span id="contador-pizzas" class="badge-count">0 pizzas</span>
+        </div>
+
+        <div class="table-container" tabindex="0" role="region" aria-label="Tabela de listagem de pizzas">
+          <div id="msg-carregando" class="loading-state" style="display: none;">
+            <p>Carregando pizzas da API...</p>
+          </div>
+
+          <table class="table-pizzas" id="tabela-pizzas">
+            <thead>
+              <tr>
+                <th scope="col" class="th-id">ID</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Sabor / Ingredientes</th>
+                <th scope="col">Tamanho</th>
+                <th scope="col" class="th-preco">Preço</th>
+                <th scope="col" class="th-acoes">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="lista-pizzas-corpo">
+              <!-- Linhas renderizadas dinamicamente via app.js -->
+            </tbody>
+          </table>
+
+          <div id="msg-vazia" class="empty-state" style="display: none;">
+            <p>Nenhuma pizza cadastrada no cardápio.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Pizzaria - AP1 Desenvolvimento Back End | Interface integrada à API REST</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

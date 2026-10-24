@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Configuração do banco SQLite
 builder.Services.AddDbContext<ApiDbContext>(options =>
     options.UseSqlite(
         builder.Configuration.GetConnectionString("DefaultConnection")
@@ -10,29 +11,35 @@ builder.Services.AddDbContext<ApiDbContext>(options =>
 
 var app = builder.Build();
 
-var pizzas = new List<Pizza>
-{
-    new Pizza(1, "Calabresa", "Calabresa, cebola e queijo", "Grande", 49.90m),
-    new Pizza(2, "Frango com Catupiry", "Frango, catupiry e queijo", "Grande", 54.90m)
-};
+// Permite abrir a interface existente em wwwroot/
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
-app.MapGet("/", () => "API da Pizzaria do Filipe");
+// Página inicial alternativa da API
+app.MapGet("/api", () => "API da Pizzaria do Filipe");
 
+// GET - Listar todas as pizzas
 app.MapGet("/api/pizzas", async (ApiDbContext db) =>
-    await db.Pizzas.ToListAsync());
-
-app.MapGet("/api/pizzas/{id:int}", (int id) =>
 {
-    var pizzaEncontrada = pizzas.Find(pizza => pizza.id == id);
+    var pizzas = await db.Pizzas.ToListAsync();
 
-    if (pizzaEncontrada is null)
+    return Results.Ok(pizzas);
+});
+
+// GET - Buscar pizza por ID
+app.MapGet("/api/pizzas/{id:int}", async (int id, ApiDbContext db) =>
+{
+    var pizza = await db.Pizzas.FindAsync(id);
+
+    if (pizza is null)
     {
         return Results.NotFound();
     }
 
-    return Results.Ok(pizzaEncontrada);
+    return Results.Ok(pizza);
 });
 
+// POST - Cadastrar uma nova pizza
 app.MapPost("/api/pizzas", async (PizzaEntity pizza, ApiDbContext db) =>
 {
     db.Pizzas.Add(pizza);
@@ -42,75 +49,63 @@ app.MapPost("/api/pizzas", async (PizzaEntity pizza, ApiDbContext db) =>
     return Results.Created($"/api/pizzas/{pizza.Id}", pizza);
 });
 
-app.MapPut("/api/pizzas/{id:int}", (int id, PizzaAtualizadaDTO dados) =>
+// PUT - Atualizar uma pizza existente
+app.MapPut("/api/pizzas/{id:int}", async (
+    int id,
+    PizzaEntity entrada,
+    ApiDbContext db) =>
 {
-    int indice = pizzas.FindIndex(pizzaDaLista => pizzaDaLista.id == id);
+    var pizza = await db.Pizzas.FindAsync(id);
 
-    if (indice == -1)
+    if (pizza is null)
     {
         return Results.NotFound();
     }
 
-    var atualizada = new Pizza(
-        id,
-        dados.nome,
-        dados.sabor,
-        dados.tamanho,
-        dados.preco
-    );
+    pizza.Nome = entrada.Nome;
+    pizza.Sabor = entrada.Sabor;
+    pizza.Tamanho = entrada.Tamanho;
+    pizza.Preco = entrada.Preco;
 
-    pizzas[indice] = atualizada;
+    await db.SaveChangesAsync();
 
-    return Results.Ok(atualizada);
+    return Results.Ok(pizza);
 });
 
-app.MapDelete("/api/pizzas/{id:int}", (int id) =>
+// DELETE - Excluir uma pizza
+app.MapDelete("/api/pizzas/{id:int}", async (int id, ApiDbContext db) =>
 {
-    int indice = pizzas.FindIndex(pizzaDaLista => pizzaDaLista.id == id);
+    var pizza = await db.Pizzas.FindAsync(id);
 
-    if (indice == -1)
+    if (pizza is null)
     {
         return Results.NotFound();
     }
 
-    pizzas.RemoveAt(indice);
+    db.Pizzas.Remove(pizza);
+
+    await db.SaveChangesAsync();
 
     return Results.NoContent();
 });
 
 app.Run();
 
-record Pizza(
-    int id,
-    string nome,
-    string sabor,
-    string tamanho,
-    decimal preco
-);
-
-record PizzaDTO(
-    string nome,
-    string sabor,
-    string tamanho,
-    decimal preco
-);
-
-record PizzaAtualizadaDTO(
-    string nome,
-    string sabor,
-    string tamanho,
-    decimal preco
-);
-
+// Model utilizado pelo Entity Framework Core
 class PizzaEntity
 {
     public int Id { get; set; }
+
     public string Nome { get; set; } = string.Empty;
+
     public string Sabor { get; set; } = string.Empty;
+
     public string Tamanho { get; set; } = string.Empty;
+
     public decimal Preco { get; set; }
 }
 
+// Contexto do banco de dados
 class ApiDbContext : DbContext
 {
     public ApiDbContext(DbContextOptions<ApiDbContext> options)
