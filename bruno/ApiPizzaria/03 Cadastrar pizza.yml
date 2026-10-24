@@ -10,10 +10,10 @@ http:
     type: json
     data: |-
       {
-        "nome": "Portuguesa",
-        "sabor": "Presunto, queijo, ovo, cebola e azeitona",
+        "nome": "Mussarela",
+        "sabor": "Queijo mussarela, tomate, orégano e azeitona",
         "tamanho": "Grande",
-        "preco": 52.90
+        "preco": 45.90
       }
   auth: inherit
 
