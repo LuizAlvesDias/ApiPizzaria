@@ -1,69 +1,98 @@
-# API Pizzaria
+# API Pizzaria — Aula 09
 
-API REST minimalista para gerenciamento de pizzas, desenvolvida com ASP.NET Core e .NET 10.
+## Integração com banco de dados utilizando Entity Framework Core
 
-## Requisitos
+Continuação do projeto API Pizzaria, desenvolvido na disciplina de Desenvolvimento Back-End com ASP.NET Core e .NET 10.
 
-- .NET SDK 10.0 ou superior
+Nesta etapa, o objetivo foi iniciar a integração da aplicação com um banco de dados relacional, utilizando **Entity Framework Core e SQLite**, por meio da abordagem Code First.
 
-## Como executar
+## Objetivo da aula
 
-Na raiz do projeto, execute:
+Preparar a estrutura necessária para substituir o armazenamento temporário em memória por um banco de dados persistente.
+
+As principais atividades realizadas foram:
+
+- Configuração do Entity Framework Core.
+- Integração com o SQLite.
+- Criação da entidade `PizzaEntity`.
+- Criação do contexto `ApiDbContext`.
+- Configuração da conexão com o banco.
+- Criação e aplicação da primeira Migration.
+
+## Tecnologias utilizadas
+
+- C#
+- ASP.NET Core Minimal API
+- .NET 10
+- Entity Framework Core
+- SQLite
+- EF Core CLI
+- Git e GitHub
+
+## Estrutura da entidade
+
+A entidade `PizzaEntity` representa as pizzas que serão armazenadas no banco de dados.
+
+| Propriedade | Descrição |
+|---|---|
+| Id | Identificador da pizza |
+| Nome | Nome da pizza |
+| Sabor | Descrição dos ingredientes |
+| Tamanho | Tamanho da pizza |
+| Preco | Preço da pizza |
+
+## Configuração do banco
+
+Foi utilizado o SQLite, com a conexão configurada no arquivo `appsettings.Development.json`.
+
+O `ApiDbContext` é responsável por representar o contexto do banco e disponibilizar a coleção de pizzas por meio do `DbSet<PizzaEntity>`.
+
+## Migration inicial
+
+A primeira Migration recebeu o nome:
+
+`BancoInicial`
+
+Comando utilizado para criá-la:
 
 ```bash
+dotnet ef migrations add BancoInicial
+```
+
+Após a criação, a estrutura foi aplicada ao banco utilizando:
+
+```bash
+dotnet ef database update
+```
+
+A execução criou a estrutura inicial do banco SQLite, incluindo a tabela de controle das Migrations do Entity Framework Core.
+
+Os arquivos da Migration foram versionados no GitHub. Já o arquivo local do banco de dados foi mantido fora do versionamento por meio do `.gitignore`.
+
+## Como executar o projeto
+
+**Pré-requisito:** .NET SDK 10 e ferramenta `dotnet-ef` compatível.
+
+Na pasta raiz do projeto, execute:
+
+```bash
+dotnet restore
 dotnet build
+dotnet ef database update
 dotnet run --urls http://localhost:5050
+```
 
-A API estará disponível em:
+## Resultado da Aula 09
 
-http://localhost:5050
+Ao final desta etapa, a aplicação passou a contar com a estrutura inicial de persistência utilizando SQLite e Entity Framework Core.
 
-Para verificar se a API está funcionando:
+O foco da aula foi preparar o banco de dados e aplicar a Migration inicial, sem implementar ainda todas as operações CRUD utilizando o contexto.
 
-GET http://localhost:5050/
+A adaptação dos endpoints para trabalhar diretamente com o banco foi realizada nas aulas seguintes.
 
-Resposta esperada:
+## Evolução do projeto
 
-API da Pizzaria do Filipe
-Endpoints
-Método	Rota	Descrição
-GET	/api/pizzas	Lista todas as pizzas
-GET	/api/pizzas/{id}	Busca uma pizza pelo ID
-POST	/api/pizzas	Cadastra uma nova pizza
-PUT	/api/pizzas/{id}	Atualiza uma pizza existente
-DELETE	/api/pizzas/{id}	Remove uma pizza
-Cadastrar pizza
-POST /api/pizzas
-{
-  "nome": "Portuguesa",
-  "sabor": "Presunto, queijo, ovo, cebola e azeitona",
-  "tamanho": "Grande",
-  "preco": 52.90
-}
-Atualizar pizza
-PUT /api/pizzas/3
-{
-  "nome": "Portuguesa Especial",
-  "sabor": "Presunto, queijo, ovo, cebola, azeitona e bacon",
-  "tamanho": "Grande",
-  "preco": 59.90
-}
-Observações
-A aplicação inicia com duas pizzas cadastradas.
-Os dados ficam armazenados somente em memória.
-Os dados são perdidos quando a aplicação é encerrada.
-Operações para um ID inexistente retornam HTTP 404 Not Found.
-O cadastro retorna HTTP 201 Created.
-A atualização retorna HTTP 200 OK.
-A remoção bem-sucedida retorna HTTP 204 No Content.
-Testes
-
-Os testes da API foram realizados utilizando o Bruno.
-
-A Collection contém os testes dos endpoints de cadastro, consulta, atualização e remoção.
-
-Vídeo
-
-Link do vídeo da apresentação:
-
-COLOCAR LINK DO VÍDEO AQUI
+- **AP1:** API REST com armazenamento em memória.
+- **Aula 09:** Model, DbContext, SQLite e Migration inicial.
+- **Aula 10:** Integração das operações de cadastro e listagem com o Entity Framework Core.
+- **Aula 12 / AP2:** CRUD completo com persistência e interface web integrada.
