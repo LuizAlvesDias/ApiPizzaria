@@ -131,7 +131,7 @@ A Collection está organizada na pasta `bruno/ApiPizzaria/`, com ambiente local 
 
 Link da apresentação:
 
-**[INSERIR LINK PÚBLICO DO VÍDEO AQUI]**
+https://drive.google.com/file/d/1F-eSI0JlCEqMsxU7JjOu0t6inOYoCgFW/view?usp=sharing
 
 O vídeo demonstra o funcionamento da API, os testes no Bruno, a interface integrada e a persistência dos dados no SQLite.
 
