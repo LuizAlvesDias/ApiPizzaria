@@ -10,10 +10,10 @@ http:
     type: json
     data: |-
       {
-        "nome": "Mussarela",
-        "sabor": "Queijo mussarela, tomate, orégano e azeitona",
+        "nome": "Quatro Queijos",
+        "sabor": "Mussarela, provolone, parmesão e gorgonzola",
         "tamanho": "Grande",
-        "preco": 45.90
+        "preco": 59.90
       }
   auth: inherit
 

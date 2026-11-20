@@ -5,15 +5,15 @@ info:
 
 http:
   method: PUT
-  url: "{{baseUrl}}/api/pizzas/3"
+  url: "{{baseUrl}}/api/pizzas/9"
   body:
     type: json
     data: |-
       {
-        "nome": "Mussarela Especial",
-        "sabor": "Queijo mussarela, tomate, orégano, azeitona e bacon",
-        "tamanho": "Grande",
-        "preco": 52.90
+        "nome": "Quatro Queijos Especial",
+        "sabor": "Mussarela, provolone, parmesão e gorgonzola",
+        "tamanho": "Família",
+        "preco": 69.90
       }
   auth: inherit
 

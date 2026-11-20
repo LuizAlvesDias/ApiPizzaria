@@ -1,4 +1,8 @@
+
+using ApiPizzaria.Data;
+using ApiPizzaria.Models;
 using Microsoft.EntityFrameworkCore;
+using ApiPizzaria.Dtos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,8 +59,16 @@ app.MapGet("/api/pizzas/{id:int}", async (int id, ApiDbContext db) =>
 });
 
 // POST - Cadastrar uma nova pizza
-app.MapPost("/api/pizzas", async (PizzaEntity pizza, ApiDbContext db) =>
+app.MapPost("/api/pizzas", async (PizzaEntrada entrada, ApiDbContext db) =>
 {
+    var pizza = new PizzaEntity
+    {
+        Nome = entrada.Nome,
+        Sabor = entrada.Sabor,
+        Tamanho = entrada.Tamanho,
+        Preco = entrada.Preco
+    };
+
     db.Pizzas.Add(pizza);
 
     await db.SaveChangesAsync();
@@ -67,7 +79,7 @@ app.MapPost("/api/pizzas", async (PizzaEntity pizza, ApiDbContext db) =>
 // PUT - Atualizar uma pizza existente
 app.MapPut("/api/pizzas/{id:int}", async (
     int id,
-    PizzaEntity entrada,
+    PizzaEntrada entrada,
     ApiDbContext db) =>
 {
     var pizza = await db.Pizzas.FindAsync(id);
@@ -105,28 +117,3 @@ app.MapDelete("/api/pizzas/{id:int}", async (int id, ApiDbContext db) =>
 });
 
 app.Run();
-
-// Model utilizado pelo Entity Framework Core
-class PizzaEntity
-{
-    public int Id { get; set; }
-
-    public string Nome { get; set; } = string.Empty;
-
-    public string Sabor { get; set; } = string.Empty;
-
-    public string Tamanho { get; set; } = string.Empty;
-
-    public decimal Preco { get; set; }
-}
-
-// Contexto do banco de dados
-class ApiDbContext : DbContext
-{
-    public ApiDbContext(DbContextOptions<ApiDbContext> options)
-        : base(options)
-    {
-    }
-
-    public DbSet<PizzaEntity> Pizzas => Set<PizzaEntity>();
-}
