@@ -200,7 +200,7 @@ Após reiniciar a API, os dados permaneceram armazenados no SQLite, confirmando 
 
 ## Vídeo de demonstração — AS
 
-**Link do vídeo:** [ADICIONAR LINK DO NOVO VÍDEO DA AS]
+**Link do vídeo:** https://drive.google.com/drive/folders/1v3JGkehzpADwjSN3dveF-9qUuxZnVkf8?usp=sharing
 
 O vídeo da Avaliação Semestral apresentará:
 
